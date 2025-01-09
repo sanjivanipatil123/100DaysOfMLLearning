@@ -1,0 +1,60 @@
+Approach to Manipulating the Football Match Dataset
+
+Objective:
+The goal is to transform the provided raw football match dataset by aggregating specific match statistics (blue columns) for the last 5, 15, and 38 matches. This will provide insight into the performance of home and away teams over recent games, helping to analyze trends and patterns.
+
+---
+
+Key Steps:
+
+1. Identify the Blue Columns:
+   - The blue columns include match statistics like `FTHG` (Full-Time Home Goals), `FTAG` (Full-Time Away Goals), `HS` (Home Shots), `AS` (Away Shots), etc. These columns represent various match metrics for each game.
+
+2. Create Aggregated Columns for Last 5, 15, and 38 Matches:
+   - For each match statistic (blue column), new columns will be created for:
+     - Last 5 matches (`_L5`)
+     - Last 15 matches (`_L15`)
+     - Last 38 matches (`_L38`)
+   - These new columns will contain the sum of the respective statistics over the last `n` matches for both home and away games.
+
+3. Filtering and Aggregation:
+   - For each team, the dataset will be filtered based on whether they were playing at home or away.
+   - The last `n` matches will be identified, and the sum of the statistics for these matches will be computed.
+   - If the team played as the home team, the home-related statistics (e.g., `FTHG`, `HS`) will be considered; otherwise, the away statistics (e.g., `FTAG`, `AS`) will be used.
+
+4. Rolling Sum Calculation:
+   - For each team and each match statistic, we will calculate a rolling sum of the statistics for the last `n` matches.
+   - For example, the `FTHG_L5_Home` column will contain the sum of home goals for the last 5 matches played by the home team.
+
+5. Handling Each Team:
+   - The process will be repeated for all teams (both home and away), creating columns for the sum of statistics for their last 5, 15, and 38 matches.
+   - Each match will be treated individually, considering its position in the sequence of games (e.g., home or away).
+
+6. Output:
+   - A new dataset will be created with the calculated statistics, including columns like `FTHG_L5_Home`, `FTHG_L5_Away`, `FTAG_L15_Home`, and `FTAG_L15_Away`.
+   - This transformed dataset will provide a clearer view of team performance trends over recent matches.
+
+---
+
+Code Overview:
+
+1. Loading the Dataset:
+   - The dataset is loaded using `pandas.read_csv()`.
+
+2. Aggregating Statistics:
+   - A custom function `compute_last_n_matches()` calculates the sum of the desired statistics for the last `n` matches.
+   - The function filters the matches for each team, distinguishes between home and away games, and applies rolling sum calculations for the required match statistics.
+
+3. Generating the Final Dataset:
+   - The final dataset consists of aggregated columns for each team and each metric, showing the statistics for the last 5, 15, and 38 matches.
+
+4. Saving the Output:
+   - The final manipulated dataset is saved as a new CSV file (`manipulated_data.csv`).
+
+---
+
+Benefits of the Approach:
+
+- Historical Performance Analysis: By aggregating match statistics for the last few games, this approach helps in understanding how a team's performance evolves over time.
+- **In-Depth Insights**: Provides a more granular view of team dynamics, such as home and away performance trends.
+- **Flexibility**: The methodology can easily be adapted to work with different datasets or different statistics beyond what is covered here.
